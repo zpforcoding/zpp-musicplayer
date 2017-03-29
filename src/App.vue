@@ -4,11 +4,11 @@
     <Banner></Banner>
     <Circles></Circles>
     <Hot></Hot>
-    <Miniplayer></Miniplayer>
+    <Miniplayer v-if="audioShowFlag"></Miniplayer>
     <transition name="main" enter-active-class="animated slideInRight" leave-active-class="animated slideOutRight">
      <router-view></router-view>
     </transition>
-    <audio :src="play" autoplay loop id="audio"></audio>
+    <audio :src="play.mp3Url" autoplay loop id="audio"></audio>
   </div>
 </template>
 <script>
@@ -28,7 +28,7 @@
     },
   computed: {
   ...mapGetters([
-      'play'
+      'play', 'audioShowFlag'
     ])
   },
     methods: {

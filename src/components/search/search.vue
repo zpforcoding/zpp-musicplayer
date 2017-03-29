@@ -15,7 +15,9 @@
                 </div>
                 <div class="song-info">
                   <p class="song-name">{{song.name}}</p>
-                  <p class="singer">{{song.artists[0].name}}</p>
+                  <div class="singer-box">
+                    <span class="singer" v-for="artist in song.artists">{{artist.name}} </span>
+                  </div>
                 </div>
                 <transition name="rotate">
                   <span class="iconfont add-icon" @click.stop="addPlayList(index)" :class="{'rotate':clickAddFlag == index}">&#xe605;</span>
@@ -73,6 +75,7 @@
                  return false;
              } else {
                this.playsong(song);
+               this.miniPlayerShow();
              }
         },
       mobileAutoPlay(event) {
@@ -83,7 +86,7 @@
         console.log(index);
       },
       ...mapActions([
-          'playsong'
+          'playsong', 'miniPlayerShow'
       ])
     }
   };
@@ -161,8 +164,14 @@
           top:2rem
           color:#888
           .song-name
-            width:50%
+            width:65%
+            text-overflow:ellipsis
             padding-bottom:0.2rem
+          .singer-box
+            width:65%
+            overflow:hidden
+            text-overflow:ellipsis
+            white-space:nowrap
         .add-icon
           font-size:1.5rem
           position:absolute

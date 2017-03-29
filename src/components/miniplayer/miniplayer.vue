@@ -3,20 +3,20 @@
     <div class="mini-wrapper" >
         <div class="img-wrapper">
           <router-link to="/song">
-            <div class="circle-box">
-                 <img src="" alt="">
+            <div class="circle-box" ref="circle" @click="songShowFlag">
+                 <img :src="play.album.picUrl+'?param=400y400'" class="mini-img">
             </div>
           </router-link>
         </div>
         <div class="right-wrapper">
           <div class="control-line"></div>
           <div class="song-info">
-            <p class="song-name">我等到花儿也谢了</p>
-            <p class="singer">张学友</p>
+            <p class="song-name">{{play.name}}</p>
+            <span class="singer" v-for="artists in play.artists">{{artists.name}} </span>
           </div>
           <div class="control-box">
-            <span class="iconfont">&#xe639;</span>
-            <span class="iconfont" v-show="false">&#xe640;</span>
+            <span class="iconfont" v-show="!playOn" @click="playGoOn()">&#xe639;</span>
+            <span class="iconfont" v-show="playOn" @click="playPause()">&#xe640;</span>
             <span class="iconfont">&#xe620;</span>
             <span class="iconfont"  @click="toggle()">&#xe610;</span>
           </div>
@@ -56,10 +56,12 @@
 
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll';
+  import {mapActions, mapGetters} from 'vuex';
   export default {
       data() {
         return {
           foldState: true,
+          playOn: true,
           playListsArr: [{
               songname: '我等到花儿也谢了',
               singer: '张学友'
@@ -123,7 +125,25 @@
           },
         hideFold() {
             this.foldState = true;
-        }
+        },
+        playGoOn() {
+            document.getElementById('audio').play();
+            this.playOn = true;
+        },
+        playPause() {
+          document.getElementById('audio').pause();
+          this.playOn = false;
+        },
+        rotateCircle() {
+            let deg = 1;
+            setInterval(() => {
+              this.$refs.circle.style.transform = `rotateZ(${deg}deg)`;
+              deg += 1;
+            }, 100);
+        },
+        ...mapActions([
+            'songShowFlag'
+        ])
       },
     computed: {
           showFlag() {
@@ -146,7 +166,13 @@
                   }
                   return show;
               }
-          }
+          },
+      ...mapGetters([
+          'play'
+      ])
+    },
+    mounted() {
+          this.rotateCircle();
     }
   };
 </script>
@@ -172,11 +198,15 @@
             width: 4rem
             height:4rem
             border-radius:100%
-            background:yellow
             position:relative
             left:0.5rem
             top:-0.5rem
             z-index:103
+            overflow:hidden
+            .mini-img
+              text-align:center
+              width:100%
+              height:100%
         .right-wrapper
           position:relative
           flex:1
@@ -192,7 +222,9 @@
             margin-top:12px
             float:left
             color:#FFF
+            width:8rem
             .singer
+              display:inline-block
               margin-top:0.3rem
           .control-box
             margin-top:12px

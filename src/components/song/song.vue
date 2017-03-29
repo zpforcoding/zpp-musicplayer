@@ -1,16 +1,16 @@
 <template>
-    <div class="song">
+    <div class="song" v-if="songComShow">
       <div class="song-wrapper">
         <div class="content-head">
-          <router-link to="../"><span class="iconfont back">&#xe602;</span></router-link>
+          <router-link to="../"><span class="iconfont back" @click="offInterval()">&#xe602;</span></router-link>
           <div class="song-info">
-            <p class="song-name">遥远的她</p>
-            <p class="song-singer">张学友</p>
+            <p class="song-name">{{play.name}}</p>
+            <span class="singer" v-for="artists in play.artists">{{artists.name}} </span>
           </div>
         </div>
         <div class="content-lrc">
-          <div class="song-circle">
-            <img src="../../assets/img/jay.jpg" class="img">
+          <div class="song-circle" ref="circlebig">
+            <img :src="play.album.picUrl+'?param=300y300'" class="img">
           </div>
           <div class="lrc-container">
             <p>123123123dsfasdfas</p>
@@ -49,7 +49,29 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import {mapGetters} from 'vuex';
+  let BigCicleTimer;
     export default {
+        computed: {
+          ...mapGetters([
+             'play', 'songComShow'
+          ])
+        },
+      methods: {
+            rotateCicle() {
+                let deg = 1;
+              BigCicleTimer = setInterval(() => {
+                    this.$refs.circlebig.style.transform = `rotateZ(${deg}deg)`;
+                    deg += 1;
+                }, 50);
+            },
+        offInterval() {
+                clearInterval(BigCicleTimer);
+        }
+      },
+      mounted() {
+            this.rotateCicle();
+      }
     };
 </script>
 
@@ -85,6 +107,7 @@
     .content-lrc
       position:relative
       .song-circle
+        position:relative
         width: 18rem
         height: 18rem
         margin:30px auto
