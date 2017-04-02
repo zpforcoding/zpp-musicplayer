@@ -1,15 +1,15 @@
 <template >
   <transition name="main" enter-active-class="animated slideInRight" leave-active-class="animated slideOutRight">
-      <div class="search animated">
+      <div class="search">
         <div class="search-wrapper">
           <div class="search-header">
             <router-link to="../"><span class="iconfont left-arrow">&#xe6a4;</span></router-link>
             <input type="text" placeholder="请输入搜索音乐、歌手" class="enterInput" v-model.trim="searchContent" @keyup.enter="searchSongs">
             <span class="iconfont searh" @click="searchSongs">&#xe672;</span>
           </div>
-          <div class="search-content" ref="searchContent">
+          <div class="search-content" ref="search">
             <ul class="search-ul">
-              <li class="search-item" v-for="(song,index) in res_songs" @click="play($event,song)" @touchstart="mobileAutoPlay($event)">
+              <li class="search-item" v-for="(song,index) in res_songs" @click.stop="plays($event,song)" @touchstart="mobileAutoPlay($event)">
                 <div class="img-wrapper">
                   <img :src="song.album.picUrl+'?param=100y100'" class="img">
                 </div>
@@ -20,7 +20,7 @@
                   </div>
                 </div>
                 <transition name="rotate">
-                  <span class="iconfont add-icon" @click.stop="addPlayList(index)" :class="{'rotate':clickAddFlag == index}">&#xe605;</span>
+                  <span class="iconfont add-icon" @click="rotateAddList(song,index)" :class="{'rotate':clickAddFlag == index}">&#xe605;</span>
                 </transition>
               </li>
             </ul>
@@ -44,6 +44,9 @@
             };
         },
     methods: {
+      ...mapActions([
+        'playsong', 'putInPlayLists', 'playStateOn', 'miniPlayerShow'
+      ]),
          searchSongs() {
              let name = this.searchContent;
              if (name) {
@@ -55,46 +58,47 @@
                  }
                }).then((response) => {
                  this.res_songs = response.data.result.songs;
-                 if (!this.seachResults) {
+                 if (!this.seach) {
                    this.$nextTick(() => {
-                     this.seachResults = new BScroll(this.$refs.searchContent, {
+                     this.seach = new BScroll(this.$refs.search, {
                        probeType: 3,
                        click: true
                      });
                    });
                  } else {
-                   this.seachResults.refresh();
+                   this.seach.refresh();
                  }
                }).catch((error) => {
                  console.log(error);
                });
              }
          },
-        play(event, song) {
+        plays(event, song) {
              if (!event._constructed) {
                  return false;
              } else {
                this.playsong(song);
+               this.putInPlayLists(song);
                this.miniPlayerShow();
+               this.playStateOn();
              }
         },
-      mobileAutoPlay(event) {
-        document.getElementById('audio').play();
+       mobileAutoPlay(event) {
+        setTimeout(() => {
+          document.getElementById('audio').play();
+        }, 500);
       },
-      addPlayList(index) {
-        this.clickAddFlag = index;
-        console.log(index);
-      },
-      ...mapActions([
-          'playsong', 'miniPlayerShow'
-      ])
+      rotateAddList(song, index) {
+          this.clickAddFlag = index;
+          this.putInPlayLists(song);
+      }
     }
   };
 </script>
 
 <style lang='stylus' rel="stylesheet/stylus">
   @import '../../assets/css/animate.css';
-  .search-wrapper
+  .search
     position:fixed
     left:0
     top:0

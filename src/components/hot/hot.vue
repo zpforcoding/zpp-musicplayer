@@ -1,4 +1,5 @@
 <template>
+  <transition name="main" enter-active-class="animated bounceInUp">
   <div class="hot">
     <div class="hot-wrapper">
       <div class="hot-title">
@@ -8,7 +9,7 @@
       <div class="hotul-fa">
         <ul class="hot-ul">
           <li class="hot-item" v-for="(list,index) in hostLists">
-            <router-link :to="{name: 'playlist',params:{id:list.id}}">
+            <router-link :to="{name: 'hotplaylist',params:{id:list.id}}">
             <div class="earphone-hotsNum">
               <span class="iconfont earphone">&#xe6aa;</span>
               <span class="hotsNum">{{list.playCount > 10000 ? (Math.floor(list.playCount / 10000) + '万') : list.playCount}}</span>
@@ -23,6 +24,7 @@
       </div>
     </div>
   </div>
+</transition>
 </template>
 <script type="text/ecmascript-6">
   import axios from 'axios';

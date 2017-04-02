@@ -15,9 +15,9 @@
         </div>
         <div class="circle-box ">
           <div class="out-circle red">
-            <span class="iconfont">&#xe638;</span>
+            <span class="iconfont">&#xe63a;</span>
           </div>
-          <p class="words">我的歌单</p>
+          <p class="words">热门歌手</p>
         </div>
       </div>
     </div>
