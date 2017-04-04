@@ -4,49 +4,50 @@
         <div class="img-wrapper">
           <router-link to="/song">
             <div class="circle-box" ref="circle" @click="songShowFlag">
-                 <img :src="play.album.picUrl+'?param=400y400'" class="mini-img">
+                <img :src="playNowSong.album.picUrl+'?param=400y400'" class="mini-img">
             </div>
           </router-link>
         </div>
         <div class="right-wrapper">
           <div class="control-line"></div>
           <div class="song-info">
-            <p class="song-name">{{play.name}}</p>
-            <span class="singer" v-for="artists in play.artists">{{artists.name}} </span>
+           <p class="song-name">{{playNowSong.name}}</p>
+           <span class="singer" v-for="artists in playNowSong.artists">{{artists.name}} </span>
           </div>
           <div class="control-box">
-            <span class="iconfont" v-show="!playOn" @click="playGoOn()">&#xe639;</span>
-            <span class="iconfont" v-show="playOn" @click="playPause()">&#xe640;</span>
-            <span class="iconfont">&#xe620;</span>
+            <span class="iconfont" v-show="!playState" @click="playGoOn()">&#xe639;</span>
+            <span class="iconfont" v-show="playState" @click="playPause()">&#xe640;</span>
+            <span class="iconfont" @click="nextPlay()">&#xe620;</span>
             <span class="iconfont"  @click="toggle()">&#xe610;</span>
           </div>
         </div>
     </div>
     <transition name="slide-fade" enter-active-class="animated zoomInLeft fast" leave-active-class="animated zoomOutRight fast">
-        <div class="mini-playlist"  v-show="showFlag">
-          <div class="mini-box">
-              <div class="mini-playlist-title">
-                <span class="play-inline">播放队列</span>
-                <span class="iconfont removeAll">&#xe604;</span>
-              </div>
-              <div class="playList" ref="playList">
-                <ul>
-                  <li class="playList-item" v-for="(songs,index) in playListsArr">
-                    <div class="mini-num">{{index+1}}</div>
-                    <div class="songs-remove-box">
-                      <div class="mini-info">
-                        <p class="mini-song-name">{{songs.songname}}</p>
-                        <p class="mini-singer">{{songs.singer}}</p>
-                      </div>
-                      <div class="item-mini-remove">
-                        <span class="iconfont">&#xe604;</span>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
+      <div class="mini-playlist"  v-if="showFlag">
+        <div class="mini-box">
+          <div class="mini-playlist-title">
+            <span class="play-inline">播放队列</span>
+            <!--<span class="iconfont removeAll" v-show="userPlayLists.length!=0">&#xe604;</span>-->
           </div>
+          <div class="playList" ref="list">
+            <ul>
+              <li class="playList-item" v-for="(songs,index) in userPlayLists" @click="plays($event,index)">
+                <div class="mini-num">{{index+1}}</div>
+                <div class="songs-remove-box">
+                  <div class="mini-info">
+                    <p class="mini-song-name">{{songs.name}}</p>
+                    <span class="mini-singer" v-for="singers in songs.artists">{{singers.name}} </span>
+                  </div>
+                  <div class="item-mini-remove">
+                    <span class="iconfont" @click="removeSong(index)">&#xe604;</span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="emptyPlayList" v-show="userPlayLists.length==0">您的播放列表为空</div>
         </div>
+      </div>
     </transition>
     <transition name="layer">
       <div class="layer" @click="hideFold" v-show="showFlag"></div>
@@ -57,119 +58,97 @@
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll';
   import {mapActions, mapGetters} from 'vuex';
+  let cicleTimer;
+  let DEG = 1;
   export default {
       data() {
         return {
           foldState: true,
-          playOn: true,
-          playListsArr: [{
-              songname: '我等到花儿也谢了',
-              singer: '张学友'
-          }, {
-            songname: '冰雨',
-            singer: '刘德华'
-          }, {
-            songname: '练习',
-            singer: '刘德华'
-          }, {
-            songname: '练习',
-            singer: '刘德华'
-          }, {
-            songname: '练习',
-            singer: '刘德华'
-          }, {
-            songname: '练习',
-            singer: '刘德华'
-          }, {
-            songname: '练习',
-            singer: '刘德华'
-          }, {
-            songname: '练习',
-            singer: '刘德华'
-          }, {
-            songname: '练习',
-            singer: '刘德华'
-          }, {
-            songname: '练习',
-            singer: '刘德华'
-          }, {
-            songname: '练习',
-            singer: '刘德华'
-          }, {
-            songname: '练习',
-            singer: '刘德华'
-          }, {
-              songname: '练习',
-              singer: '刘德华'
-            }, {
-              songname: '练习',
-              singer: '刘德华'
-            }, {
-              songname: '练习',
-              singer: '刘德华'
-            }, {
-              songname: '练习',
-              singer: '刘德华'
-            }
-
+          playListsArr: [
           ]
         };
       },
       methods: {
+        ...mapActions([
+          'playsong', 'playListSong', 'songShowFlag', 'playStateOn', 'playStatePause', 'nextSong', 'removeSong'
+        ]),
         toggle() {
-             if (!this.playListsArr) {
-                 return false;
-             } else {
-                this.foldState = !this.foldState;
-             }
-          },
+          if (!this.playListsArr) {
+            return false;
+          } else {
+            this.foldState = !this.foldState;
+          }
+        },
         hideFold() {
-            this.foldState = true;
+          this.foldState = true;
+        },
+        rotateCircle() {
+          cicleTimer = setInterval(() => {
+              this.$refs.circle.style.transform = `rotateZ(${DEG}deg)`;
+            DEG += 1;
+            }, 100);
         },
         playGoOn() {
-            document.getElementById('audio').play();
-            this.playOn = true;
+          document.getElementById('audio').play();
+          this.playStateOn();
         },
         playPause() {
           document.getElementById('audio').pause();
-          this.playOn = false;
+          this.playStatePause();
         },
-        rotateCircle() {
-            let deg = 1;
-            setInterval(() => {
-              this.$refs.circle.style.transform = `rotateZ(${deg}deg)`;
-              deg += 1;
-            }, 100);
+        offInterval() {
+          clearInterval(cicleTimer);
         },
-        ...mapActions([
-            'songShowFlag'
-        ])
+        plays(event, index) {
+          if (!event._constructed) {
+            return false;
+          } else {
+              console.log(index);
+            this.playsong();
+            this.playListSong(index);
+            this.playStateOn();
+          }
+        },
+        nextPlay() {
+          this.nextSong();
+          this.playStateOn();
+        }
       },
     computed: {
-          showFlag() {
-              if (!this.playListsArr) {
-                  this.foldState = true;
-                  return false;
-              } else {
-                  let show = !this.foldState;
-                  if (show) {
-                      if (!this.playListScroll) {
-                        this.$nextTick(() => {
-                          this.playListScroll = new BScroll(this.$refs.playList, {
-                            click: true,
-                            probeType: 3
-                          });
-                        });
-                      } else {
-                        this.playListScroll.refresh();
-                      }
-                  }
-                  return show;
-              }
-          },
       ...mapGetters([
-          'play'
-      ])
+        'playNowSong', 'userPlayLists', 'playState'
+      ]),
+      showFlag() {
+        if (!this.playListsArr) {
+          this.foldState = true;
+          return false;
+        } else {
+          let show = !this.foldState;
+          if (show) {
+            if (!this.scroll) {
+              this.$nextTick(() => {
+                this.scroll = new BScroll(this.$refs.list, {
+                  click: true,
+                  probeType: 3
+                });
+              });
+            } else {
+              this.scroll.refresh();
+            }
+          }
+          return show;
+        }
+      }
+    },
+    watch: {
+      playState() {
+        if (this.playState) {
+          this.rotateCircle();
+        } else {
+          this.offInterval();
+        }
+      },
+      deep: true
     },
     mounted() {
           this.rotateCircle();
@@ -219,28 +198,27 @@
             height: 2px
             background:#FFF
           .song-info
-            margin-top:12px
+            margin-top:10px
             float:left
             color:#FFF
-            width:8rem
+            width:6rem
             .singer
               display:inline-block
               margin-top:0.3rem
           .control-box
-            margin-top:12px
+            margin-top:10px
             float:right
             .iconfont
               display:inline-block
               color: #ffffff
-              margin-left:1.5rem
-
+              margin-right:0.3rem
       .mini-playlist
         position:absolute
         z-index:99
         left:0
         bottom:4rem
         width:100%
-        height:364px
+        height:264px
         background:yellowgreen
         color:#FFF
         overflow:hidden
@@ -258,38 +236,45 @@
               float:right
               padding:0 8px
               font-size:1.6rem
-
-        .playList
-          position:relative
-          left:0
-          top:0
-          width:100%
-          max-height:20rem
-          overflow:hidden
-          .playList-item
+          .playList
+            position:relative
+            left:0
+            top:0
             width:100%
-            height:3.5rem
-            display:flex
-            .mini-num
-              width:15%
-              height: 50px
-              text-align:center
-              line-height:50px
-            .songs-remove-box
-              width:85%
-              overflow:hidden
-              border-bottom:1px solid lawngreen
-              .mini-info
-                float:left
-                padding:8px
-                .mini-singer
-                  margin-top:5px
-                  color:#ddd
-              .item-mini-remove
-                float:right
-                padding:12px 8px 0 0
-                .iconfont
-                  font-size:1.6rem !important
+            max-height:20rem
+            overflow:hidden
+            .playList-item
+              width:100%
+              height:3.5rem
+              display:flex
+              .mini-num
+                width:15%
+                height: 50px
+                text-align:center
+                line-height:50px
+              .songs-remove-box
+                width:85%
+                overflow:hidden
+                border-bottom:1px solid lawngreen
+                .mini-info
+                  float:left
+                  padding:8px
+                  .mini-singer
+                    display:inline-block
+                    margin-top:5px
+                    color:#eee
+                .item-mini-remove
+                  float:right
+                  padding:12px 8px 0 0
+                  .iconfont
+                    font-size:1.6rem !important
+          .emptyPlayList
+            width:60%
+            height: 50px
+            line-height:50px
+            margin:100px auto
+            font-size:1.2rem
+            text-align:center
       .layer
         position:fixed
         left:0

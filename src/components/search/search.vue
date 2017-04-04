@@ -1,6 +1,6 @@
 <template >
   <transition name="main" enter-active-class="animated slideInRight" leave-active-class="animated slideOutRight">
-      <div class="search">
+      <div class="search" v-if="searchComShow">
         <div class="search-wrapper">
           <div class="search-header">
             <router-link to="../"><span class="iconfont left-arrow">&#xe6a4;</span></router-link>
@@ -33,16 +33,20 @@
 <script type="text/ecmascript-6">
   import axios from 'axios';
   import BScroll from 'better-scroll';
-  import {mapActions} from 'vuex';
+  import {mapActions, mapGetters} from 'vuex';
   export default {
         data() {
             return {
-              searchShow: '',
               searchContent: '',
               res_songs: [],
               clickAddFlag: ''
             };
         },
+    computed: {
+      ...mapGetters([
+          'searchComShow'
+      ])
+    },
     methods: {
       ...mapActions([
         'playsong', 'putInPlayLists', 'playStateOn', 'miniPlayerShow'
@@ -58,15 +62,15 @@
                  }
                }).then((response) => {
                  this.res_songs = response.data.result.songs;
-                 if (!this.seach) {
+                 if (!this.search) {
                    this.$nextTick(() => {
-                     this.seach = new BScroll(this.$refs.search, {
+                     this.search = new BScroll(this.$refs.search, {
                        probeType: 3,
                        click: true
                      });
                    });
                  } else {
-                   this.seach.refresh();
+                   this.search.refresh();
                  }
                }).catch((error) => {
                  console.log(error);

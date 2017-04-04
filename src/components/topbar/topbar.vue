@@ -3,16 +3,21 @@
       <div class="header-wrapp">
         <span class="iconfont icon-menu">&#xe61d;</span>
         <div class="header-words">
-          <span class="iconfont icon-words">&#xe601;</span> Like Me <span class="iconfont icon-words">&#xe601;</span>
+          <span class="iconfont icon-words">&#xe601;</span> Belongs <span class="iconfont icon-words">&#xe601;</span>
         </div>
-        <router-link to="/search"><span class="iconfont icon-search">&#xe672;</span></router-link>
+        <router-link to="/search"><span class="iconfont icon-search" @click="searchShowFlag()">&#xe672;</span></router-link>
       </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import {mapActions} from 'vuex';
     export default {
-
+        methods: {
+          ...mapActions([
+              'searchShowFlag'
+          ])
+        }
     };
 </script>
 

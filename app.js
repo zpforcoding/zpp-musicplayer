@@ -46,10 +46,24 @@ app.use('/search',(req,res) => {
   let name = req.query.name;
   let limit = req.query.limit;
   let offset = req.query.offset;
-  neteaseMusicApi.search(name,(data) => {
+  neteaseMusicApi.search(name, (data) => {
     res.send(data);
     // console.log(data);
   },limit,offset);
 });
-//
+//获取歌词
+app.use('/lrc',(req, res) => {
+  console.log("请求歌词");
+  let id = req.query.id;
+  neteaseMusicApi.lrc(id, (data) => {
+    res.send(data);
+  });
+});
+//获取用户歌单
+app.use('/userPlaylists', (req, res) => {
+  let uid = req.query.uid;
+  neteaseMusicApi.userPlaylists(uid, (data) => {
+    res.send(data);
+  });
+});
 app.listen(5000);

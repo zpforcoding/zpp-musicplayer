@@ -43,6 +43,14 @@ module.exports = {
       '/playlists': {
         target: 'http://localhost:5000',
         changeOrigin: true
+      },
+      '/lrc': {
+        target: 'http://localhost:5000',
+        changeOrigin: true
+      },
+      '/userPlaylists': {
+        target: 'http://localhost:5000',
+        changeOrigin: true
       }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"

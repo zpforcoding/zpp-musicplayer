@@ -1,4 +1,5 @@
 <template>
+  <transition name="main" enter-active-class="animated zoomInDown" leave-active-class="animated zoomOutUp">
     <div class="hot-playlist">
       <div class="hotinfo-wrapper">
         <div class="hotinfo-top">
@@ -30,29 +31,32 @@
           </div>
           <div class="list-ul-wrapper" ref='playlist'>
             <ul>
-              <li class="list-item" v-for="(songs,index) in dataObj.tracks">
+              <li class="list-item" v-for="(songs,index) in dataObj.tracks" @click="plays($event,songs)" @touchstart="mobileAutoPlay($event)">
                 <div class="list-num">{{index<9?'0'+(index+1):index+1}}</div>
                 <div class="song-info">
                   <p class="song-name">{{songs.name}}</p>
-                  <p class="singer-name">{{songs.artists[0].name}}</p>
+                  <span class="singer-name" v-for="singers in songs.artists">{{singers.name}} </span>
                 </div>
-                <div class="iconfont add">&#xe605;</div>
+                <div class="iconfont add" @click="rotateAddList(songs,index)" :class="{'rotate':clickAddFlag == index}">&#xe605;</div>
               </li>
             </ul>
           </div>
         </div>
       </div>
     </div>
+  </transition>
 </template>
 
 <script type="text/ecmascript-6">
   import axios from 'axios';
   import BScroll from 'better-scroll';
+  import {mapActions} from 'vuex';
   export default {
       data() {
           return {
               dataObj: '',
-            dataReady: false
+            dataReady: false,
+            clickAddFlag: ''
           };
       },
      created() {
@@ -76,7 +80,31 @@
          }).catch((error) => {
              console.log(error);
          });
-     }
+     },
+    methods: {
+      ...mapActions([
+        'playsong', 'putInPlayLists', 'addSongPlayList', 'playStateOn', 'miniPlayerShow'
+      ]),
+      plays(event, song) {
+        if (!event._constructed) {
+          return false;
+        } else {
+          this.playsong(song);
+          this.putInPlayLists(song);
+          this.miniPlayerShow();
+          this.playStateOn();
+        }
+      },
+      rotateAddList(songs, index) {
+        this.clickAddFlag = index;
+        this.putInPlayLists(songs);
+      },
+      mobileAutoPlay(event) {
+        setTimeout(() => {
+          document.getElementById('audio').play();
+        }, 500);
+      }
+    }
   };
 </script>
 
@@ -157,7 +185,7 @@
                   left:0.5rem
                   bottom:0.6rem
     .play-all-title
-      padding:1rem 0 0 1.5rem
+      padding:0.5rem 0 0.5rem 1.5rem
       .playall-icon
         color:yellowgreen
       .text-muted
@@ -180,6 +208,11 @@
           text-align:center
           color:yellowgreen
           font-size:1rem
+        .add
+          &.rotate
+            opacity: 1
+            transition:all 0.5s ease
+            transform: rotate(720deg)
         .song-info
           flex:1
           padding-top:0.8rem

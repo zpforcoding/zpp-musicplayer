@@ -5,10 +5,10 @@
     <Circles></Circles>
     <Hot></Hot>
     <Miniplayer v-if="audioShowFlag"></Miniplayer>
-    <transition name="main" enter-active-class="animated slideInRight" leave-active-class="animated slideOutRight">
-     <router-view></router-view>
-    </transition>
-    <audio :src="play.mp3Url" autoplay loop id="audio"></audio>
+    <router-view></router-view>
+    <div class="audio-wrapper" v-if="playNowSong!=undefined">
+      <audio :src="playNowSong.mp3Url" autoplay id="audio" @ended="order()">您的浏览器不支持 audio 元素。</audio>
+    </div>
   </div>
 </template>
 <script>
@@ -17,8 +17,13 @@
   import Circles from './components/circle/circle';
   import Hot from './components/hot/hot';
   import Miniplayer from './components/miniplayer/miniplayer';
-  import {mapGetters} from 'vuex';
+  import {mapActions, mapGetters} from 'vuex';
   export default {
+      data() {
+        return {
+          loopFlag: false
+        };
+      },
     components: {
       TopBar,
       Banner,
@@ -28,13 +33,26 @@
     },
   computed: {
   ...mapGetters([
-      'play', 'audioShowFlag'
+      'playNowSong', 'audioShowFlag', 'orderState'
     ])
   },
     methods: {
-        autoPlay() {
-            this.$refs.audio.play();
+      ...mapActions([
+          'nextSong', 'randomPlay', 'loopPlay'
+      ]),
+      order() {
+        if (this.orderState === 0) {
+          this.nextSong();
+          console.log('顺序播放');
+        } else if (this.orderState === 2) {
+          console.log('随机播放');
+          this.randomPlay();
+        } else {
+          document.getElementById('audio').pause();
+          this.loopPlay();
+          document.getElementById('audio').play();
         }
+      }
     }
   };
 </script>

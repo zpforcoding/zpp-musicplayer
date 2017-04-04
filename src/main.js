@@ -4,11 +4,26 @@ import Vue from 'vue';
 import App from './App';
 import search from './components/search/search';
 import song from './components/song/song';
-import playlist from './components/playlist/playlist';
+import hotplaylist from './components/hotplaylist/hotplaylist';
 import Router from 'vue-router';
 import store from './store';
 Vue.use(Router);
 Vue.config.productionTip = false;
+// 定义一个时间戳过滤器
+Vue.filter('durationChange', (currentTime) => {
+  let minute = currentTime / 1000 / 60;
+  minute = parseInt(minute);
+  if (minute < 10) {
+    minute = '0' + minute;
+  }
+  let seconds = currentTime / 1000 % 60;
+  seconds = parseInt(seconds);
+  if (seconds < 10) {
+    seconds = '0' + seconds;
+  }
+  let currentTimeDis = minute + ':' + seconds;
+  return currentTimeDis;
+});
 const routes = [
   {
       path: '/search',
@@ -21,9 +36,9 @@ const routes = [
     name: 'song'
   },
   {
-    path: '/playlist/:id',
-    component: playlist,
-    name: 'playlist'
+    path: '/hotplaylist/:id',
+    component: hotplaylist,
+    name: 'hotplaylist'
   }
 ];
 
