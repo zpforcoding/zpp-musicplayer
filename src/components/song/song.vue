@@ -268,7 +268,7 @@
           height:100%
       .lrc-container
         position:relative
-        width:100%
+        width:90%
         margin:0 auto
         height:6.8rem
         text-align:center

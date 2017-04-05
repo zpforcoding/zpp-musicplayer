@@ -67,29 +67,24 @@
                }
          }).then((response) => {
              this.dataObj = response.data.result;
-           if (!this.scroll) {
              this.$nextTick(() => {
-               this.playlistScroll = new BScroll(this.$refs.playlist, {
+               this.scroll = new BScroll(this.$refs.playlist, {
                  probeType: 3,
                  click: true
                });
              });
-           } else {
-             this.playlistScroll.refresh();
-           }
          }).catch((error) => {
              console.log(error);
          });
      },
     methods: {
       ...mapActions([
-        'playsong', 'putInPlayLists', 'addSongPlayList', 'playStateOn', 'miniPlayerShow'
+        'putInPlayLists', 'addSongPlayList', 'playStateOn', 'miniPlayerShow'
       ]),
       plays(event, song) {
         if (!event._constructed) {
           return false;
         } else {
-          this.playsong(song);
           this.putInPlayLists(song);
           this.miniPlayerShow();
           this.playStateOn();

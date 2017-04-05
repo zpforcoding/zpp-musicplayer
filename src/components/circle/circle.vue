@@ -36,6 +36,7 @@
   width:100%
   height:4rem
   display:flex
+  z-index:98
   .circle-box
     flex:1
     text-align:center

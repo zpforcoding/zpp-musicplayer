@@ -61,6 +61,7 @@
     left:0
     margin-top:3rem
     width:100%
+    z-index:98
     .hot-title
       padding-left:0.4rem
       .fire

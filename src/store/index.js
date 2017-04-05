@@ -16,8 +16,6 @@ export default new Vuex.Store({
       orderState: 0 // 0顺序播放// 1单曲循环// 2随机播放
     },
   mutations: {
-    playsong(state) {
-      },
     putInPlayLists(state, song) {
       if (state.userPlayLists.length === 0) {
         state.userPlayLists.push(song);
@@ -66,6 +64,7 @@ export default new Vuex.Store({
     },
     lastSong(state) {
       state.songNowIndex--;
+      console.log(state.songNowIndex);
       if (state.songNowIndex < 0) {
         state.songNowIndex = state.userPlayLists.length - 1;
       }
@@ -87,75 +86,57 @@ export default new Vuex.Store({
     },
     removeSong(state, index) {
       state.userPlayLists.splice(index, 1);
+      state.songNowIndex = state.songNowIndex - 1;
     }
   },
   actions: {
-    playsong(context) {
-      console.log('playsong');
-        context.commit('playsong');
-    },
     putInPlayLists(context, song) {
-      console.log('putInPlayLists');
       context.commit('putInPlayLists', song);
     },
     miniPlayerShow(context) {
-      console.log('miniPlayerShow');
         context.commit('miniPlayerShow');
     },
     searchShowFlag(context) {
-      console.log('searchShowFlag');
       context.commit('searchShowFlag');
     },
     songShowFlag(context) {
-      console.log('songShowFlag');
         context.commit('songShowFlag');
     },
     songHideFlag(context) {
-      console.log('songHideFlag');
       context.commit('songHideFlag');
     },
     playStateOn(context) {
-      console.log('playStateOn');
         context.commit('playStateOn');
     },
     playStatePause(context) {
-      console.log('playStatePause');
       context.commit('playStatePause');
     },
     playListSong(context, index) {
-      console.log('playListSong');
       context.commit('playListSong', index);
     },
     nextSong(context) {
-      console.log('nextSong');
       context.commit('nextSong');
     },
     lastSong(context) {
-      console.log('lastSong');
+      console.log('上一首');
       context.commit('lastSong');
     },
     inOrderState(context) {
-      console.log('inOrderState');
       context.commit('inOrderState');
     },
     loopState(context) {
-      console.log('loopState');
       context.commit('loopState');
     },
     randomState(context) {
-      console.log('randomState');
       context.commit('randomState');
     },
     randomPlay(context) {
-      console.log('randomPlay');
       context.commit('randomPlay');
     },
     loopPlay(context) {
-      console.log('loopPlay');
       context.commit('loopPlay');
     },
     removeSong(context, index) {
-      console.log('removeSong');
       context.commit('removeSong', index);
     }
   },

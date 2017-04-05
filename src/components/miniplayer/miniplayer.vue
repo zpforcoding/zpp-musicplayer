@@ -26,12 +26,12 @@
       <div class="mini-playlist"  v-if="showFlag">
         <div class="mini-box">
           <div class="mini-playlist-title">
-            <span class="play-inline">播放队列</span>
+            <span class="play-inline">播放队列 {{playListsArr.length}}</span>
             <!--<span class="iconfont removeAll" v-show="userPlayLists.length!=0">&#xe604;</span>-->
           </div>
           <div class="playList" ref="list">
-            <ul>
-              <li class="playList-item" v-for="(songs,index) in userPlayLists" @click="plays($event,index)">
+            <ul v-if="userPlayLists.length!=0">
+              <li class="playList-item" v-for="(songs,index) in playListsArr" @click="plays($event,index)">
                 <div class="mini-num">{{index+1}}</div>
                 <div class="songs-remove-box">
                   <div class="mini-info">
@@ -39,13 +39,13 @@
                     <span class="mini-singer" v-for="singers in songs.artists">{{singers.name}} </span>
                   </div>
                   <div class="item-mini-remove">
-                    <span class="iconfont" @click="removeSong(index)">&#xe604;</span>
+                    <span class="iconfont" @click="remove(index)">&#xe604;</span>
                   </div>
                 </div>
               </li>
             </ul>
           </div>
-          <div class="emptyPlayList" v-show="userPlayLists.length==0">您的播放列表为空</div>
+          <div class="emptyPlayList" v-show="playListsArr.length==0">您的播放列表为空</div>
         </div>
       </div>
     </transition>
@@ -70,7 +70,7 @@
       },
       methods: {
         ...mapActions([
-          'playsong', 'playListSong', 'songShowFlag', 'playStateOn', 'playStatePause', 'nextSong', 'removeSong'
+          'playListSong', 'songShowFlag', 'playStateOn', 'playStatePause', 'nextSong', 'lastSong', 'removeSong'
         ]),
         toggle() {
           if (!this.playListsArr) {
@@ -103,8 +103,6 @@
           if (!event._constructed) {
             return false;
           } else {
-              console.log(index);
-            this.playsong();
             this.playListSong(index);
             this.playStateOn();
           }
@@ -112,6 +110,10 @@
         nextPlay() {
           this.nextSong();
           this.playStateOn();
+        },
+        remove(index) {
+            this.playStatePause();
+            this.removeSong(index);
         }
       },
     computed: {
@@ -125,16 +127,12 @@
         } else {
           let show = !this.foldState;
           if (show) {
-            if (!this.scroll) {
               this.$nextTick(() => {
                 this.scroll = new BScroll(this.$refs.list, {
                   click: true,
                   probeType: 3
                 });
               });
-            } else {
-              this.scroll.refresh();
-            }
           }
           return show;
         }
@@ -147,6 +145,9 @@
         } else {
           this.offInterval();
         }
+      },
+      userPlayLists() {
+          this.playListsArr = this.userPlayLists;
       },
       deep: true
     },
@@ -201,7 +202,7 @@
             margin-top:10px
             float:left
             color:#FFF
-            width:6rem
+            width:6.5rem
             .singer
               display:inline-block
               margin-top:0.3rem
@@ -218,8 +219,8 @@
         left:0
         bottom:4rem
         width:100%
-        height:264px
-        background:yellowgreen
+        max-height:364px
+        background:rgba(0,0,0,0.6)
         color:#FFF
         overflow:hidden
         .mini-box
@@ -282,7 +283,7 @@
         width:100%
         height:100%
         z-index:50
-        background:rgba(0,0,0,0.3)
+        background:rgba(0,0,0,0.2)
         &.layer-enter-active,&.layer-leave-active
           transition:all 0.3 fast
           backdrop-filter:blur(1px)

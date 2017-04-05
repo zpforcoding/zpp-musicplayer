@@ -49,7 +49,7 @@
     },
     methods: {
       ...mapActions([
-        'playsong', 'putInPlayLists', 'playStateOn', 'miniPlayerShow'
+         'putInPlayLists', 'playStateOn', 'miniPlayerShow'
       ]),
          searchSongs() {
              let name = this.searchContent;
@@ -62,16 +62,12 @@
                  }
                }).then((response) => {
                  this.res_songs = response.data.result.songs;
-                 if (!this.search) {
                    this.$nextTick(() => {
                      this.search = new BScroll(this.$refs.search, {
                        probeType: 3,
                        click: true
                      });
                    });
-                 } else {
-                   this.search.refresh();
-                 }
                }).catch((error) => {
                  console.log(error);
                });
@@ -81,7 +77,6 @@
              if (!event._constructed) {
                  return false;
              } else {
-               this.playsong(song);
                this.putInPlayLists(song);
                this.miniPlayerShow();
                this.playStateOn();
