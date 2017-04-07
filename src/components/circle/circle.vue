@@ -13,12 +13,14 @@
           </div>
           <p class="words">每日推荐</p>
         </div>
-        <div class="circle-box ">
-          <div class="out-circle red">
-            <span class="iconfont">&#xe63a;</span>
+          <div class="circle-box ">
+            <router-link :to="{name: 'hotartist'}">
+              <div class="out-circle red">
+                <span class="iconfont">&#xe63a;</span>
+              </div>
+            </router-link>
+            <p class="words">热门歌手</p>
           </div>
-          <p class="words">热门歌手</p>
-        </div>
       </div>
     </div>
 </template>

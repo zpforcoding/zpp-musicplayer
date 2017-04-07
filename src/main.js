@@ -5,6 +5,7 @@ import App from './App';
 import search from './components/search/search';
 import song from './components/song/song';
 import hotplaylist from './components/hotplaylist/hotplaylist';
+import hotartists from './components/hotartists/hotartists';
 import Router from 'vue-router';
 import store from './store';
 Vue.use(Router);
@@ -39,6 +40,11 @@ const routes = [
     path: '/hotplaylist/:id',
     component: hotplaylist,
     name: 'hotplaylist'
+  },
+  {
+    path: '/hotartist',
+    component: hotartists,
+    name: 'hotartist'
   }
 ];
 

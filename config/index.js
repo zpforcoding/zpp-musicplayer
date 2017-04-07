@@ -48,7 +48,7 @@ module.exports = {
         target: 'http://localhost:5000',
         changeOrigin: true
       },
-      '/userPlaylists': {
+      '/hotartists': {
         target: 'http://localhost:5000',
         changeOrigin: true
       }

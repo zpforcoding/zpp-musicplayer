@@ -66,4 +66,10 @@ app.use('/userPlaylists', (req, res) => {
     res.send(data);
   });
 });
+//热门歌手列表
+app.use('/hotartist', (req, res) => {
+  neteaseMusicApi.hotArtist((data) => {
+    res.send(data);
+  });
+});
 app.listen(5000);

@@ -1,6 +1,6 @@
 <template>
   <transition name="main" enter-active-class="animated bounceInUp">
-  <div class="hot">
+  <div class="hot" v-if="hotShow">
     <div class="hot-wrapper">
       <div class="hot-title">
         <span class="iconfont fire">&#xe64f;</span>
@@ -31,18 +31,20 @@
   export default {
       data() {
         return {
-            hostLists: []
+          hostLists: [],
+          hotShow: false
         };
       },
         methods: {
             getHotList() {
               axios.get('/topPlaylists', {
                   params: {
-                      limit: 30,
+                      limit: 42,
                       offset: 0
                   }
               }).then((response) => {
                     this.hostLists = response.data.playlists;
+                    this.hotShow = true;
                 }).catch((error) => {
                   console.log(error);
               });

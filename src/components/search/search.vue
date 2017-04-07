@@ -9,7 +9,7 @@
           </div>
           <div class="search-content" ref="search">
             <ul class="search-ul">
-              <li class="search-item" v-for="(song,index) in res_songs" @click.stop="plays($event,song)" @touchstart="mobileAutoPlay($event)">
+              <li class="search-item" v-for="(song,index) in res_songs" @click.stop="plays($event,song)" @touchstart="mobileAutoPlay()">
                 <div class="img-wrapper">
                   <img :src="song.album.picUrl+'?param=100y100'" class="img">
                 </div>
@@ -20,11 +20,14 @@
                   </div>
                 </div>
                 <transition name="rotate">
-                  <span class="iconfont add-icon" @click="rotateAddList(song,index)" :class="{'rotate':clickAddFlag == index}">&#xe605;</span>
+                  <span class="iconfont add-icon" @click="rotateAddList(song,index,$event)">&#xe605;</span>
                 </transition>
               </li>
             </ul>
           </div>
+        </div>
+        <div class="remind-wrapper">
+          <Remind :info="info" v-if="remindShow"></Remind>
         </div>
       </div>
   </transition>
@@ -34,12 +37,20 @@
   import axios from 'axios';
   import BScroll from 'better-scroll';
   import {mapActions, mapGetters} from 'vuex';
+  import Remind from '../remind/remind.vue';
+  const ADD_SUCC = '已添加到播放列表';
+//  const ADD_FALSE = '添加到列表失败';
   export default {
+      components: {
+        Remind
+      },
         data() {
             return {
               searchContent: '',
               res_songs: [],
-              clickAddFlag: ''
+              clickAddFlag: '',
+              info: '',
+              remindShow: false
             };
         },
     computed: {
@@ -79,23 +90,32 @@
              } else {
                this.putInPlayLists(song);
                this.miniPlayerShow();
+               document.getElementById('audio').play();
                this.playStateOn();
+               this.info = ADD_SUCC;
+               this.remindShow = true;
+               setTimeout(() => {
+                 this.remindShow = false;
+               }, 3000);
              }
         },
-       mobileAutoPlay(event) {
-        setTimeout(() => {
-          document.getElementById('audio').play();
-        }, 500);
+       mobileAutoPlay() {
+         document.getElementById('audio');
+         this.playStateOn();
       },
-      rotateAddList(song, index) {
+      rotateAddList(song, index, event) {
           this.clickAddFlag = index;
           this.putInPlayLists(song);
+          let e = window.event || event;
+          e.target.style.transform = 'rotate(720deg)';
+          e.target.style.transition = 'all 1s ease';
       }
     }
   };
 </script>
 
 <style lang='stylus' rel="stylesheet/stylus">
+  @import '../../assets/stylus/mixin.styl';
   @import '../../assets/css/animate.css';
   .search
     position:fixed
@@ -116,7 +136,7 @@
      width:100%
      height: 4rem
      line-height:4rem
-     background:yellowgreen
+     background:$theme
      .left-arrow
       flex:0,0,50px
       font-size:2rem
@@ -126,6 +146,8 @@
       padding-left:15px
       width:60%
       height:2rem
+      border-radius:10px
+      outline:none
       &::-webkit-input-placeholder
         text-align:center
     .searh
@@ -145,7 +167,7 @@
         width:100%
         height:6rem
         background:#fff
-        border:1px solid yellowgreen
+        border:1px solid $theme
         .img-wrapper
           display:inline-block
           width:4rem
@@ -180,9 +202,5 @@
           position:absolute
           right:1rem
           top:2rem
-          color: yellowgreen
-          &.rotate
-            opacity: 1
-            transition:all 0.5s ease
-            transform: rotate(720deg)
+          color: $theme
 </style>

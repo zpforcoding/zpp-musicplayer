@@ -31,17 +31,20 @@
           </div>
           <div class="list-ul-wrapper" ref='playlist'>
             <ul>
-              <li class="list-item" v-for="(songs,index) in dataObj.tracks" @click="plays($event,songs)" @touchstart="mobileAutoPlay($event)">
+              <li class="list-item" v-for="(songs,index) in dataObj.tracks" @click="plays($event,songs)" @touchstart="mobileAutoPlay()">
                 <div class="list-num">{{index<9?'0'+(index+1):index+1}}</div>
                 <div class="song-info">
                   <p class="song-name">{{songs.name}}</p>
                   <span class="singer-name" v-for="singers in songs.artists">{{singers.name}} </span>
                 </div>
-                <div class="iconfont add" @click="rotateAddList(songs,index)" :class="{'rotate':clickAddFlag == index}">&#xe605;</div>
+                <div class="iconfont add" @click="rotateAddList(songs,index,$event)" :class="{'rotate':clickAddFlag == index}">&#xe605;</div>
               </li>
             </ul>
           </div>
         </div>
+      </div>
+      <div class="remind-wrapper">
+        <Remind :info="info" v-if="remindShow"></Remind>
       </div>
     </div>
   </transition>
@@ -51,12 +54,18 @@
   import axios from 'axios';
   import BScroll from 'better-scroll';
   import {mapActions} from 'vuex';
+  import Remind from '../remind/remind.vue';
+  const ADD_SUCC = '已添加到播放列表';
   export default {
+    components: {
+      Remind
+    },
       data() {
           return {
               dataObj: '',
             dataReady: false,
-            clickAddFlag: ''
+            clickAddFlag: '',
+            remindShow: false
           };
       },
      created() {
@@ -88,22 +97,29 @@
           this.putInPlayLists(song);
           this.miniPlayerShow();
           this.playStateOn();
+          this.info = ADD_SUCC;
+          this.remindShow = true;
+          setTimeout(() => {
+            this.remindShow = false;
+          }, 3000);
         }
       },
-      rotateAddList(songs, index) {
+      rotateAddList(songs, index, event) {
         this.clickAddFlag = index;
         this.putInPlayLists(songs);
+        let e = window.event || event;
+        e.target.style.transform = 'rotate(720deg)';
+        e.target.style.transition = 'all 1s ease';
       },
-      mobileAutoPlay(event) {
-        setTimeout(() => {
-          document.getElementById('audio').play();
-        }, 500);
+      mobileAutoPlay() {
+        document.getElementById('audio').play();
       }
     }
   };
 </script>
 
 <style lang='stylus' rel="stylesheet/stylus">
+  @import '../../assets/stylus/mixin.styl';
   .hot-playlist
     position:fixed
     left:0
@@ -122,7 +138,7 @@
         position:absolute
         left:0
         top:0
-        background:yellowgreen
+        background:$theme
         text-align center
         .left-arrow,.playlist-title
           color: #ffffff
@@ -136,8 +152,8 @@
         .img-box
           width:100%
           height: 12rem
-          background:yellowgreen
-          border-bottom:1px solid yellowgreen
+          background: $theme
+          border-bottom:1px solid $theme
           .img-wrapper
             width:90%
             margin:0 auto
@@ -149,6 +165,7 @@
               display:inline-block
               margin-top:2rem
               height:6rem
+              outline:none
             .wrapper-left
               flex:0,0,6rem
               padding-left:1.5rem
@@ -182,7 +199,7 @@
     .play-all-title
       padding:0.5rem 0 0.5rem 1.5rem
       .playall-icon
-        color:yellowgreen
+        color:$theme
       .text-muted
         color:#777
     .list-ul-wrapper
@@ -195,13 +212,13 @@
         align-content:space-between
         width:100%
         height:4rem
-        border-bottom:1px solid yellowgreen
+        border-bottom:1px solid $theme
         .list-num,.add
           flex: 0 0 50px
           height:100%
           line-height:4rem
           text-align:center
-          color:yellowgreen
+          color:$theme
           font-size:1rem
         .add
           &.rotate

@@ -22,13 +22,14 @@
 </script>
 
 <style lang='stylus' rel="stylesheet/stylus">
+  @import '../../assets/stylus/mixin.styl';
   .header-wrapp
     position:fixed
     left:0
     top:0
     width:100%
     height: 4rem
-    background:yellowgreen
+    background:$theme
     line-height:4rem
     display:flex
     justify-content:space-around

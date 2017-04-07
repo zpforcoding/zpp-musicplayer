@@ -1,6 +1,6 @@
 <template>
   <transition name="main" enter-active-class="animated rollIn" leave-active-class="animated rollOut">
-    <div class="song" v-if="songComShow">
+    <div class="song" v-if="songComShow" ref="song">
       <div class="song-wrapper">
         <div class="content-head">
           <router-link to="../"><span class="iconfont back" @click="offInterval(),songHideFlag()">&#xe602;</span></router-link>
@@ -11,7 +11,9 @@
         </div>
         <div class="content-lrc">
           <div class="song-circle" ref="circlebig">
-            <img :src="playNowSong.album.picUrl+'?param=400y400'" class="img">
+            <div class="inner-circle">
+              <img :src="playNowSong.album.picUrl+'?param=400y400'" class="img">
+            </div>
           </div>
           <div class="lrc-container" >
             <ul class="lrc-box" ref="box" id="lrcBox"></ul>
@@ -38,9 +40,13 @@
                 <span class="iconfont" @click="nextPlay()">&#xe600;</span>
               </div>
               <div class="song-list">
-                <span class="iconfont">&#xe610;</span>
+                <span class="iconfont" @click="toggle()">&#xe610;</span>
               </div>
             </div>
+          </div>
+          <Userplaylist :foldState="foldState"></Userplaylist>
+          <div class="layer-wrapper"  @click="hideFold()">
+            <Layer :foldState="!foldState"></Layer>
           </div>
         </div>
       </div>
@@ -51,10 +57,16 @@
 <script type="text/ecmascript-6">
   import axios from 'axios';
   import {mapGetters, mapActions} from 'vuex';
+  import Userplaylist from '../userplaylist/userplaylist';
+  import Layer from '../layer/layer';
   let bigCicleTimer;
   let currentTimer;
   let DEG = 1;
     export default {
+        components: {
+          Userplaylist,
+          Layer
+        },
         data() {
           return {
             orderShow: true,
@@ -62,7 +74,8 @@
             randomShow: false,
             orderBoxFlag: false,
             lyricChangeBefore: [],
-            lyricChangeAfter: []
+            lyricChangeAfter: [],
+            foldState: true
           };
         },
         computed: {
@@ -78,6 +91,12 @@
         ...mapActions([
           'playStateOn', 'playStatePause', 'nextSong', 'lastSong', 'inOrderState', 'loopState', 'randomState', 'songHideFlag'
         ]),
+        toggle() {
+          this.foldState = !this.foldState;
+        },
+        hideFold() {
+          this.foldState = true;
+        },
         rotateCircle() {
           bigCicleTimer = setInterval(() => {
             this.$refs.circlebig.style.transform = `rotateZ(${DEG}deg)`;
@@ -112,7 +131,6 @@
           this.playStateOn();
         },
         playPause() {
-          console.log(123123123123);
           document.getElementById('audio').pause();
           this.playStatePause();
         },
@@ -224,6 +242,7 @@
 </script>
 
 <style lang='stylus' rel="stylesheet/stylus">
+  @import '../../assets/stylus/mixin.styl';
   .song
     position:fixed
     left:0
@@ -231,7 +250,7 @@
     width:100%
     height:100%
     z-index:103
-    background:yellowgreen
+    background:$theme
     .content-head
       width:100%
       height: 4rem
@@ -262,7 +281,18 @@
         height: 18rem
         margin:10px auto
         border-radius:100%
+        background:#000
         overflow:hidden
+        .inner-circle
+          width: 12rem
+          height: 12rem
+          border-radius:100%
+          position:absolute
+          left:50%
+          top:50%
+          margin-top: -6rem
+          margin-left:-6rem
+          overflow:hidden
         .img
           width:100%
           height:100%

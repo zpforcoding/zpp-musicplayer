@@ -22,62 +22,36 @@
           </div>
         </div>
     </div>
-    <transition name="slide-fade" enter-active-class="animated zoomInLeft fast" leave-active-class="animated zoomOutRight fast">
-      <div class="mini-playlist"  v-if="showFlag">
-        <div class="mini-box">
-          <div class="mini-playlist-title">
-            <span class="play-inline">播放队列 {{playListsArr.length}}</span>
-            <!--<span class="iconfont removeAll" v-show="userPlayLists.length!=0">&#xe604;</span>-->
-          </div>
-          <div class="playList" ref="list">
-            <ul v-if="userPlayLists.length!=0">
-              <li class="playList-item" v-for="(songs,index) in playListsArr" @click="plays($event,index)">
-                <div class="mini-num">{{index+1}}</div>
-                <div class="songs-remove-box">
-                  <div class="mini-info">
-                    <p class="mini-song-name">{{songs.name}}</p>
-                    <span class="mini-singer" v-for="singers in songs.artists">{{singers.name}} </span>
-                  </div>
-                  <div class="item-mini-remove">
-                    <span class="iconfont" @click="remove(index)">&#xe604;</span>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <div class="emptyPlayList" v-show="playListsArr.length==0">您的播放列表为空</div>
-        </div>
-      </div>
-    </transition>
-    <transition name="layer">
-      <div class="layer" @click="hideFold" v-show="showFlag"></div>
-    </transition>
+    <Userplaylist :foldState="foldState"></Userplaylist>
+    <div class="layer-wrapper"  @click="hideFold()">
+      <Layer :foldState="!foldState"></Layer>
+    </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import BScroll from 'better-scroll';
   import {mapActions, mapGetters} from 'vuex';
+  import Userplaylist from '../userplaylist/userplaylist';
+  import Layer from '../layer/layer';
   let cicleTimer;
   let DEG = 1;
   export default {
+      components: {
+        Userplaylist,
+        Layer
+      },
       data() {
         return {
           foldState: true,
-          playListsArr: [
-          ]
+          playListsArr: []
         };
       },
       methods: {
         ...mapActions([
-          'playListSong', 'songShowFlag', 'playStateOn', 'playStatePause', 'nextSong', 'lastSong', 'removeSong'
+          'songShowFlag', 'playStateOn', 'playStatePause', 'nextSong', 'lastSong'
         ]),
         toggle() {
-          if (!this.playListsArr) {
-            return false;
-          } else {
-            this.foldState = !this.foldState;
-          }
+          this.foldState = !this.foldState;
         },
         hideFold() {
           this.foldState = true;
@@ -99,44 +73,15 @@
         offInterval() {
           clearInterval(cicleTimer);
         },
-        plays(event, index) {
-          if (!event._constructed) {
-            return false;
-          } else {
-            this.playListSong(index);
-            this.playStateOn();
-          }
-        },
         nextPlay() {
           this.nextSong();
           this.playStateOn();
-        },
-        remove(index) {
-            this.playStatePause();
-            this.removeSong(index);
         }
       },
     computed: {
       ...mapGetters([
-        'playNowSong', 'userPlayLists', 'playState'
-      ]),
-      showFlag() {
-        if (!this.playListsArr) {
-          this.foldState = true;
-          return false;
-        } else {
-          let show = !this.foldState;
-          if (show) {
-              this.$nextTick(() => {
-                this.scroll = new BScroll(this.$refs.list, {
-                  click: true,
-                  probeType: 3
-                });
-              });
-          }
-          return show;
-        }
-      }
+        'playNowSong', 'playState'
+      ])
     },
     watch: {
       playState() {
@@ -145,9 +90,6 @@
         } else {
           this.offInterval();
         }
-      },
-      userPlayLists() {
-          this.playListsArr = this.userPlayLists;
       },
       deep: true
     },
@@ -158,6 +100,7 @@
 </script>
 
 <style lang='stylus' rel="stylesheet/stylus">
+  @import '../../assets/stylus/mixin.styl';
     .miniplayer
       position:fixed
       left:0
@@ -165,7 +108,7 @@
       z-index:99
       width:100%
       height:4rem
-      background:yellowgreen
+      background:$theme
       .mini-wrapper
         position:relative
         z-index:100
@@ -213,82 +156,4 @@
               display:inline-block
               color: #ffffff
               margin-right:0.3rem
-      .mini-playlist
-        position:absolute
-        z-index:99
-        left:0
-        bottom:4rem
-        width:100%
-        max-height:364px
-        background:rgba(0,0,0,0.6)
-        color:#FFF
-        overflow:hidden
-        .mini-box
-          .mini-playlist-title
-            width:100%
-            height: 40px
-            line-height:40px
-            border-bottom:1px solid #eee
-            overflow:hidden
-            .play-inline
-              float:left
-              padding:0 8px
-            .removeAll
-              float:right
-              padding:0 8px
-              font-size:1.6rem
-          .playList
-            position:relative
-            left:0
-            top:0
-            width:100%
-            max-height:20rem
-            overflow:hidden
-            .playList-item
-              width:100%
-              height:3.5rem
-              display:flex
-              .mini-num
-                width:15%
-                height: 50px
-                text-align:center
-                line-height:50px
-              .songs-remove-box
-                width:85%
-                overflow:hidden
-                border-bottom:1px solid lawngreen
-                .mini-info
-                  float:left
-                  padding:8px
-                  .mini-singer
-                    display:inline-block
-                    margin-top:5px
-                    color:#eee
-                .item-mini-remove
-                  float:right
-                  padding:12px 8px 0 0
-                  .iconfont
-                    font-size:1.6rem !important
-          .emptyPlayList
-            width:60%
-            height: 50px
-            line-height:50px
-            margin:100px auto
-            font-size:1.2rem
-            text-align:center
-      .layer
-        position:fixed
-        left:0
-        bottom:4rem
-        width:100%
-        height:100%
-        z-index:50
-        background:rgba(0,0,0,0.2)
-        &.layer-enter-active,&.layer-leave-active
-          transition:all 0.3 fast
-          backdrop-filter:blur(1px)
-          opacity:0
-        &.layer-enter,&.layer-leave-active
-          backdrop-filter:blur(0)
-          opacity:1
 </style>
