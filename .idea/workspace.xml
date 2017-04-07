@@ -2,22 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="79f70301-33c9-47ff-8c67-d5cd6a17b9e4" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/assets/stylus/mixin.styl" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/components/hotartists/hotartists.vue" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/components/layer/layer.vue" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/components/userplaylist/userplaylist.vue" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.js" afterPath="$PROJECT_DIR$/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/index.js" afterPath="$PROJECT_DIR$/config/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/App.vue" afterPath="$PROJECT_DIR$/src/App.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/circle/circle.vue" afterPath="$PROJECT_DIR$/src/components/circle/circle.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/hot/hot.vue" afterPath="$PROJECT_DIR$/src/components/hot/hot.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/hotplaylist/hotplaylist.vue" afterPath="$PROJECT_DIR$/src/components/hotplaylist/hotplaylist.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/miniplayer/miniplayer.vue" afterPath="$PROJECT_DIR$/src/components/miniplayer/miniplayer.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/search/search.vue" afterPath="$PROJECT_DIR$/src/components/search/search.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/song/song.vue" afterPath="$PROJECT_DIR$/src/components/song/song.vue" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/topbar/topbar.vue" afterPath="$PROJECT_DIR$/src/components/topbar/topbar.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main.js" afterPath="$PROJECT_DIR$/src/main.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -59,11 +45,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="song.vue" pinned="false" current-in-tab="true">
+      <file leaf-file-name="song.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/song/song.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="245">
-              <caret line="148" column="84" lean-forward="false" selection-start-line="148" selection-start-column="84" selection-end-line="148" selection-end-column="84" />
+            <state relative-caret-position="210">
+              <caret line="51" column="12" lean-forward="true" selection-start-line="51" selection-start-column="12" selection-end-line="51" selection-end-column="12" />
               <folding>
                 <element signature="e#2925#2951#0" expanded="true" />
               </folding>
@@ -71,11 +57,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="topbar.vue" pinned="false" current-in-tab="false">
+      <file leaf-file-name="topbar.vue" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/topbar/topbar.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="24" column="43" lean-forward="true" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="43" />
+            <state relative-caret-position="245">
+              <caret line="7" column="55" lean-forward="true" selection-start-line="7" selection-start-column="55" selection-end-line="7" selection-end-column="55" />
               <folding />
             </state>
           </provider>
@@ -186,11 +172,11 @@
       <find>foldState</find>
       <find>mini-playlist</find>
       <find>song-circle</find>
-      <find>toggle</find>
       <find>hideFold</find>
       <find>remindShow</find>
       <find>playList</find>
       <find>rotateAddList</find>
+      <find>toggle</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -245,7 +231,6 @@
         <option value="$PROJECT_DIR$/src/components/remind/remind.vue" />
         <option value="$PROJECT_DIR$/src/components/layer/layer.js" />
         <option value="$PROJECT_DIR$/src/components/layer/layer.vue" />
-        <option value="$PROJECT_DIR$/src/components/topbar/topbar.vue" />
         <option value="$PROJECT_DIR$/src/components/miniplayer/miniplayer.vue" />
         <option value="$PROJECT_DIR$/src/components/hotartists/hotartists.vue" />
         <option value="$PROJECT_DIR$/src/assets/stylus/mixin.styl" />
@@ -253,6 +238,7 @@
         <option value="$PROJECT_DIR$/src/components/hotplaylist/hotplaylist.vue" />
         <option value="$PROJECT_DIR$/src/components/userplaylist/userplaylist.vue" />
         <option value="$PROJECT_DIR$/src/components/song/song.vue" />
+        <option value="$PROJECT_DIR$/src/components/topbar/topbar.vue" />
       </list>
     </option>
   </component>
@@ -581,12 +567,12 @@
       <workItem from="1491357364765" duration="21745000" />
       <workItem from="1491453466036" duration="598000" />
       <workItem from="1491534585783" duration="3997000" />
-      <workItem from="1491539004055" duration="18143000" />
+      <workItem from="1491539004055" duration="18334000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="454933000" />
+    <option name="totallyTimeSpent" value="455124000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -598,7 +584,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1932" height="1048" extended-state="1" />
+    <frame x="-9" y="-9" width="1932" height="1048" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.172761" sideWeight="0.49118683" order="0" side_tool="false" content_ui="tabs" />
@@ -870,14 +856,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/topbar/topbar.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="24" column="43" lean-forward="true" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/miniplayer/miniplayer.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="201">
@@ -946,11 +924,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/song/song.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="245">
-          <caret line="148" column="84" lean-forward="false" selection-start-line="148" selection-start-column="84" selection-end-line="148" selection-end-column="84" />
+        <state relative-caret-position="210">
+          <caret line="51" column="12" lean-forward="true" selection-start-line="51" selection-start-column="12" selection-end-line="51" selection-end-column="12" />
           <folding>
             <element signature="e#2925#2951#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/topbar/topbar.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="245">
+          <caret line="7" column="55" lean-forward="true" selection-start-line="7" selection-start-column="55" selection-end-line="7" selection-end-column="55" />
+          <folding />
         </state>
       </provider>
     </entry>
