@@ -21,7 +21,7 @@
     bottom:4rem
     width:100%
     height:100%
-    z-index:103
+    z-index:30
     background:rgba(0,0,0,0.2)
     &.layer-enter-active,&.layer-leave-active
       transition:all 0.3 fast

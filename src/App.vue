@@ -63,7 +63,6 @@
     },
     watch: {
       playNowSong() {
-          console.log('改变了');
           this.mp3Url = this.playNowSong.mp3Url;
       },
       deep: true

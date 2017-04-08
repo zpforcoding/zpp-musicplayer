@@ -20,7 +20,12 @@
           </div>
         </div>
         <div class="content-player">
-          <div class="song-duration"><span class="alreadyTime" ref="current">0:00</span><span class="duration">{{playNowSong.duration | durationChange}}</span></div>
+          <div class="song-duration">
+            <span class="alreadyTime" ref="current">
+            </span><span class="duration">{{playNowSong.duration | durationChange}}</span>
+            <div class="online" ref="online"></div>
+            <div class="move-circle" ref="move"></div>
+          </div>
           <div class="control-box">
             <div class="song-bottom">
               <div class="song-order">
@@ -139,21 +144,31 @@
           for (let j = 0; j < this.lyricChangeAfter.length; j++) {
             str += `<li class='lrc-item'>${this.lyricChangeAfter[j][1]}</li>`;
           }
-          this.$refs.box.innerHTML = str;
+          document.getElementById('lrcBox').innerHTML = str;
           let audioObj = document.getElementById('audio');
+          let onlineObj = this.$refs.online;
+          let moveCircle = this.$refs.move;
           audioObj.ontimeupdate = () => {
+            onlineObj.style.width = audioObj.currentTime / audioObj.duration * 100 + '%';
+            moveCircle.style.left = audioObj.currentTime / audioObj.duration * 100 + '%';
             for (var i = 0; i < this.lyricChangeAfter.length; i++) {
                 if (audioObj.currentTime > this.lyricChangeAfter[i][0]) {
                   if (this.songComShow) {
                     this.$refs.box.style.top = -i * 35.2 + 7 + 'px';
                     this.$refs.box.getElementsByTagName('li')[i].style.color = '#444';
-                    if (audioObj.ended) {
-                      console.log('播放完了');
-                      document.getElementById('lrcBox').innerHTML = '';
-                      this.getSongLrc();
-                    }
                   }
                 }
+            }
+            if (audioObj.ended) {
+              console.log('播放完了');
+              document.getElementById('lrcBox').innerHTML = '';
+              onlineObj.style.width = '0%';
+              moveCircle.style.left = '0%';
+              this.$refs.box.style.top = '7px';
+              if (this.orderState === 1) {
+                  console.log('循环播放');
+                this.getSongLrc();
+              }
             }
           };
         },
@@ -170,7 +185,7 @@
                 for (let i = 0; i < length; i++) {
                   var d = this.lyricChangeBefore[i].match(/\[\d{2}:\d{2}.\d{3}\]/g);  // 正则匹配播放时间
                   var t = this.lyricChangeBefore[i].split(d); // 以时间为分割点分割每行歌词，数组最后一个为歌词正文
-                  if (d != null) { // 过滤掉空行等非歌词正文部分
+                  if (d !== null) { // 过滤掉空行等非歌词正文部分
                     // 换算时间，保留两位小数
                     let dt = String(d).split(':');
                     let _t = parseInt(dt[0].split('[')[1]) * 60 + parseFloat(dt[1].split(']')[0]);
@@ -226,8 +241,9 @@
             }
         },
         playNowSong() {
-          console.log(this.playNowSong.id);
-          this.getSongLrc();
+            console.log('歌变了');
+            console.log(this.orderState);
+            this.getSongLrc();
         },
         deep: true
       },
@@ -327,21 +343,37 @@
       height:90px
       .song-duration
         position:relative
-        width:70%
+        width:65%
         margin:0 auto
         height:2px
         margin-top:10px
         background:#FFF
         .duration
           position:absolute
-          right:-3rem
+          right:-3.5rem
           top:-0.4rem
           color:#FFF
         .alreadyTime
           position:absolute
-          left:-3rem
+          left:-3.5rem
           top:-0.4rem
           color:#FFF
+        .online
+          display:inline-block
+          width:0%
+          height:100%
+          background:red
+          position:absolute
+          left:0
+          top:0
+        .move-circle
+          width: 1rem
+          height: 1rem
+          border-radius:100%
+          background:#FFF
+          position:absolute
+          left:0rem
+          top:-0.4rem
       .song-bottom
         width:100%
         margin-top:25px

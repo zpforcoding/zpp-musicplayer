@@ -56,7 +56,6 @@ export default new Vuex.Store({
       state.songNowIndex = index;
     },
     nextSong(state) {
-      state.orderState = 0;
       state.songNowIndex++;
       if (state.songNowIndex > state.userPlayLists.length - 1) {
         state.songNowIndex = 0;

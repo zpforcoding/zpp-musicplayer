@@ -9,7 +9,6 @@
           </router-link>
         </div>
         <div class="right-wrapper">
-          <div class="control-line"></div>
           <div class="song-info">
            <p class="song-name">{{playNowSong.name}}</p>
            <span class="singer" v-for="artists in playNowSong.artists">{{artists.name}} </span>
@@ -105,7 +104,7 @@
       position:fixed
       left:0
       bottom:0
-      z-index:99
+      z-index:103
       width:100%
       height:4rem
       background:$theme
@@ -124,7 +123,7 @@
             position:relative
             left:0.5rem
             top:-0.5rem
-            z-index:103
+            z-index:108
             overflow:hidden
             .mini-img
               text-align:center
@@ -137,15 +136,12 @@
           padding:8px 8px 0 0
           overflow:hidden
           font-size:0.8rem!important
-          .control-line
-            width:100%
-            height: 2px
-            background:#FFF
           .song-info
             margin-top:10px
             float:left
             color:#FFF
             width:6.5rem
+            font-size:0.7rem
             .singer
               display:inline-block
               margin-top:0.3rem

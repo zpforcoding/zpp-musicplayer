@@ -79,7 +79,7 @@
   @import '../../assets/stylus/mixin.styl';
   .mini-playlist
     position:absolute
-    z-index:105
+    z-index:50
     left:0
     bottom:4rem
     width:100%
