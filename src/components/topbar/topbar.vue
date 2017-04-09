@@ -3,7 +3,7 @@
       <div class="header-wrapp">
         <span class="iconfont icon-menu">&#xe61d;</span>
         <div class="header-words">
-          <span class="iconfont icon-words">&#xe601;</span> 酷鸡音乐 <span class="iconfont icon-words">&#xe601;</span>
+          <span class="iconfont icon-words">&#xe601;</span> 酷酷音乐 <span class="iconfont icon-words">&#xe601;</span>
         </div>
         <router-link to="/search"><span class="iconfont icon-search" @click="searchShowFlag()">&#xe672;</span></router-link>
       </div>

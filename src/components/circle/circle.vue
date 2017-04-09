@@ -2,15 +2,19 @@
     <div class="circle">
       <div class="circle-wrapper">
         <div class="circle-box">
+          <router-link :to="{name: 'biaoge'}">
           <div class="out-circle green">
             <span class="iconfont">&#xecc3;</span>
           </div>
-          <p class="words">私人FM</p>
+          </router-link>
+          <p class="words">飙歌榜</p>
         </div>
         <div class="circle-box ">
-          <div class="out-circle blue">
+          <router-link :to="{name: 'recommend'}">
+            <div class="out-circle blue">
             <span class="iconfont">&#xe603;</span>
           </div>
+          </router-link>
           <p class="words">每日推荐</p>
         </div>
           <div class="circle-box ">

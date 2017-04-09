@@ -62,10 +62,13 @@
       }
     },
     watch: {
-      playNowSong() {
-          this.mp3Url = this.playNowSong.mp3Url;
-      },
-      deep: true
+      playNowSong: {
+          handler: function() {
+              console.log('歌单变化了');
+            this.mp3Url = this.playNowSong.mp3Url;
+          },
+        deep: true
+      }
     }
   };
 </script>

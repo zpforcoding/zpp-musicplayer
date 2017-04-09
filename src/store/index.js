@@ -63,7 +63,6 @@ export default new Vuex.Store({
     },
     lastSong(state) {
       state.songNowIndex--;
-      console.log(state.songNowIndex);
       if (state.songNowIndex < 0) {
         state.songNowIndex = state.userPlayLists.length - 1;
       }
@@ -84,8 +83,11 @@ export default new Vuex.Store({
       state.songNowIndex = state.songNowIndex;
     },
     removeSong(state, index) {
+      if (state.songNowIndex === index) {
+        state.playState = false;
+      }
       state.userPlayLists.splice(index, 1);
-      state.songNowIndex = state.songNowIndex - 1;
+      state.songNowIndex = 0;
     }
   },
   actions: {
@@ -117,7 +119,6 @@ export default new Vuex.Store({
       context.commit('nextSong');
     },
     lastSong(context) {
-      console.log('上一首');
       context.commit('lastSong');
     },
     inOrderState(context) {

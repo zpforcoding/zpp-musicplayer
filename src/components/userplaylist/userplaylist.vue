@@ -60,18 +60,20 @@
         }
       },
     watch: {
-      foldState() {
-        let show = !this.foldState;
-        if (show) {
-          this.$nextTick(() => {
-            this.scroll = new BScroll(this.$refs.list, {
-              click: true,
-              probeType: 3
-            });
-          });
-        }
-      },
-      deep: true
+      foldState: {
+          handler: function() {
+            let show = !this.foldState;
+            if (show) {
+              this.$nextTick(() => {
+                this.scroll = new BScroll(this.$refs.list, {
+                  click: true,
+                  probeType: 3
+                });
+              });
+            }
+          },
+        deep: true
+      }
     }
   };
 </script>
@@ -106,7 +108,7 @@
         left:0
         top:0
         width:100%
-        max-height:21.5rem
+        max-height:21.6rem
         overflow:hidden
         .playList-item
           width:100%

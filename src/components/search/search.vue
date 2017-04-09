@@ -3,7 +3,7 @@
       <div class="search" v-if="searchComShow">
         <div class="search-wrapper">
           <div class="search-header">
-            <router-link to="../"><span class="iconfont left-arrow">&#xe6a4;</span></router-link>
+            <router-link to="../"><span class="iconfont left-arrow">&#xe602;</span></router-link>
             <input type="text" placeholder="请输入搜索音乐、歌手" class="enterInput" v-model.trim="searchContent" @keyup.enter="searchSongs">
             <span class="iconfont searh" @click="searchSongs">&#xe672;</span>
           </div>

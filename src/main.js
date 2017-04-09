@@ -6,6 +6,8 @@ import search from './components/search/search';
 import song from './components/song/song';
 import hotplaylist from './components/hotplaylist/hotplaylist';
 import hotartists from './components/hotartists/hotartists';
+import recommend from './components/recommend/recommend';
+import biaoge from './components/biaoge/biaoge';
 import Router from 'vue-router';
 import store from './store';
 Vue.use(Router);
@@ -45,6 +47,16 @@ const routes = [
     path: '/hotartist',
     component: hotartists,
     name: 'hotartist'
+  },
+  {
+    path: '/recommend',
+    component: recommend,
+    name: 'recommend'
+  },
+  {
+    path: '/biaoge',
+    component: biaoge,
+    name: 'biaoge'
   }
 ];
 

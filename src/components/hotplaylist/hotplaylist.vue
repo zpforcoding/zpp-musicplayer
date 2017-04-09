@@ -233,5 +233,9 @@
           .singer-name
             color: #aaa
           .song-name
+            width:14rem
             color:#222
+            overflow:hidden
+            text-overflow:ellipsis
+            white-space:nowrap
 </style>

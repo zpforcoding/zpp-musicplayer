@@ -4,7 +4,7 @@
     <div class="hot-wrapper">
       <div class="hot-title">
         <span class="iconfont fire">&#xe64f;</span>
-        <h1 class="title">热门歌单</h1>
+        <h1 class="title">推荐歌单</h1>
       </div>
       <div class="hotul-fa">
         <ul class="hot-ul">

@@ -42,7 +42,7 @@
       data() {
         return {
           foldState: true,
-          playListsArr: []
+          playListArr: []
         };
       },
       methods: {
@@ -58,7 +58,7 @@
         rotateCircle() {
           cicleTimer = setInterval(() => {
               this.$refs.circle.style.transform = `rotateZ(${DEG}deg)`;
-            DEG += 1;
+            DEG++;
             }, 100);
         },
         playGoOn() {
@@ -77,20 +77,25 @@
           this.playStateOn();
         }
       },
+    beforeMount() {
+
+    },
     computed: {
       ...mapGetters([
         'playNowSong', 'playState'
       ])
     },
     watch: {
-      playState() {
-        if (this.playState) {
-          this.rotateCircle();
-        } else {
-          this.offInterval();
-        }
-      },
-      deep: true
+      playState: {
+          handler: function() {
+            if (this.playState) {
+              this.rotateCircle();
+            } else {
+              this.offInterval();
+            }
+          },
+        deep: true
+      }
     },
     mounted() {
           this.rotateCircle();
@@ -137,16 +142,19 @@
           overflow:hidden
           font-size:0.8rem!important
           .song-info
-            margin-top:10px
+            margin-top:5px
             float:left
             color:#FFF
             width:6.5rem
-            font-size:0.7rem
+            .song-name
+              font-size:0.8rem
             .singer
+              color:yellowgreen
               display:inline-block
-              margin-top:0.3rem
+              margin-top:8px
+              font-size:0.7rem
           .control-box
-            margin-top:10px
+            margin-top:5px
             float:right
             .iconfont
               display:inline-block

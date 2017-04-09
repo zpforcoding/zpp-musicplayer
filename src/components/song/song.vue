@@ -29,7 +29,7 @@
           <div class="control-box">
             <div class="song-bottom">
               <div class="song-order">
-                <span class="iconfont play-order" v-show="orderState === 0"  @click="orderBoxShow()">&#xe630;</span>
+                <span class="iconfont play-order" v-show="orderState === 0"  @click="orderBoxShow()">&#xe65e;</span>
                 <span class="iconfont play-order" v-show="orderState === 1" @click="orderBoxShow()">&#xe62f;</span>
                 <span class="iconfont play-order" v-show="orderState === 2" @click="orderBoxShow()">&#xe680;</span>
                 <div class="order-box" v-show="orderBoxFlag">
@@ -88,10 +88,6 @@
              'playNowSong', 'songComShow', 'playState', 'orderState'
           ])
         },
-      created() {
-            console.log('请求歌词');
-            this.getSongLrc();
-      },
       methods: {
         ...mapActions([
           'playStateOn', 'playStatePause', 'nextSong', 'lastSong', 'inOrderState', 'loopState', 'randomState', 'songHideFlag'
@@ -155,18 +151,16 @@
                 if (audioObj.currentTime > this.lyricChangeAfter[i][0]) {
                   if (this.songComShow) {
                     this.$refs.box.style.top = -i * 35.2 + 7 + 'px';
-                    this.$refs.box.getElementsByTagName('li')[i].style.color = '#444';
+                    this.$refs.box.getElementsByTagName('li')[i].style.color = 'yellowgreen';
                   }
                 }
             }
             if (audioObj.ended) {
-              console.log('播放完了');
               document.getElementById('lrcBox').innerHTML = '';
               onlineObj.style.width = '0%';
               moveCircle.style.left = '0%';
               this.$refs.box.style.top = '7px';
               if (this.orderState === 1) {
-                  console.log('循环播放');
                 this.getSongLrc();
               }
             }
@@ -231,21 +225,24 @@
         }
       },
       watch: {
-        playState() {
-            if (this.playState) {
-              this.rotateCircle();
-              this.currentTimeDis();
+        playState: {
+            handler: function() {
+              if (this.playState) {
+                this.rotateCircle();
+                this.currentTimeDis();
+                this.getSongLrc();
+              } else {
+                this.offInterval();
+              }
+            },
+          deep: true
+        },
+        playNowSong: {
+            handler: function() {
               this.getSongLrc();
-            } else {
-              this.offInterval();
-            }
-        },
-        playNowSong() {
-            console.log('歌变了');
-            console.log(this.orderState);
-            this.getSongLrc();
-        },
-        deep: true
+            },
+          deep: true
+        }
       },
       mounted() {
             if (this.playState) {
@@ -280,10 +277,10 @@
         position:absolute
         left:50%
         top:50%
-        width:200px
+        width:220px
         height:40px
         margin-top: -20px
-        margin-left:-100px
+        margin-left:-110px
         color:#fff
         line-height:1.4rem
         text-align:center
