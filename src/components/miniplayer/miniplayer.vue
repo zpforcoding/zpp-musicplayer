@@ -159,5 +159,5 @@
             .iconfont
               display:inline-block
               color: #ffffff
-              margin-right:0.3rem
+              margin-right:5px
 </style>
